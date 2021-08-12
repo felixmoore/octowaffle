@@ -1,36 +1,38 @@
 {% extends "./layout.html" %}
 
 {% block pageTitle %}
-<title> Generate Report </title>
+<title> Generate Sales Report </title>
 {% endblock %}
 
 {% block content %}
-    <h1>Please see employee data below.</h1>
+    <h1>Please see monthly sales data below.</h1>
     {% if error %}
         <div class="govuk-error-message">{{ error }}</div>
     {% endif %}
     
-  <h2>List of Employees</h2> 
+  <h2>List of Sales Employees sorted by highest sales total</h2> 
 
-    {% if employees and employees.length > 0 %} 
+    {% if salesEmployees and salesEmployees.length > 0 %} 
 
       <table>
         <thead>
             <tr>
-                <th>Department</th>
+                
                 <th>ID</th>
                 <th>First name</th>
                 <th>Last name</th>
+                <th>Total monthly sales</th>
                 
             </tr>
         </thead>
         <tbody>
-            {% for  employee in employees | sort(attribute='department')  %}
+            {% for  employee in salesEmployees | sort(true, attribute='total_sales_monthly')  %} {# true argument reverses sort order #}
                 <tr>
-                    <td>{{employee.department}}</td>
+                    
                     <td>{{employee.employee_id}}</td>
                     <td>{{employee.first_name}}</td>
                     <td>{{employee.last_name}}</td>
+                    <td>{{employee.total_sales_monthly}}</td>
                    
                 </tr>
             {% endfor %}
@@ -39,7 +41,7 @@
 
 
     {% else %}
-      There are no employees. 
+      There are no sales employees. 
     {% endif %}
 {% endblock %}
 
