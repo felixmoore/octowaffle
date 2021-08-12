@@ -66,7 +66,9 @@ app.post('/addEmployee', async (req, res) => {
     if ((req.body.last_name).length > 40) {
         return res.render('newEmployeeForm', { error: 'Maximum characters for last name is 40!' })
     }
-    if(!(/^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\s*\d\s*){6}([A-D]|\s)$/.test(req.body.nin))){
+
+    // https://stackoverflow.com/questions/10204378/regular-expression-to-validate-uk-national-insurance-number
+    if(!(/^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\s*\d\s*){6}([A-D]|\s)$/i.test((req.body.nin)))){
         return res.render('newEmployeeForm', {error: 'Invalid NiN'})
     }
     if ((req.body.nin).length > 13) {
@@ -75,7 +77,7 @@ app.post('/addEmployee', async (req, res) => {
     if(await empData.checkIfNationalInsuranceNumberIsInDatabase(req.body.nin)){
         return res.render('newEmployeeForm', {error: 'Someone has already registered with this insurance number'})
     }
-
+    // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
     if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test((req.body.email).toLowerCase()))) {
         return res.render('newEmployeeForm', { error: 'Invalid email' })
     }
@@ -91,7 +93,7 @@ app.post('/addEmployee', async (req, res) => {
     if ((req.body.sortcode).length > 8) {
         return res.render('newEmployeeForm', { error: 'Maximum characters for sort code is 8!' })
     }
-    if ((req.body.account_number).length > 26) {
+    if ((req.body.account_number).length > 8) {
         return res.render('newEmployeeForm', { error: 'Maximum characters for account number is 26!' })
     }
     if ((req.body.salary).length > 9) {
@@ -100,10 +102,20 @@ app.post('/addEmployee', async (req, res) => {
 
     req.body.nin = (req.body.nin).replace(/ /g,'')
     let insertedKey = await empData.addEmployee(req.body);
-
+    if(req.body.department == 'Sales Team'){
+        return res.render('newSalesForm', {employee_id: empData.getEmployeeByNiN(req.body.nin)})
+    }
 
     // validate here
     res.render('newEmployeeForm', req.body)
+})
+
+app.get('/newSalesForm', () => {
+    return res.render('newSalesForm')
+})
+
+app.post('newSalesForm', async (req, res) => {
+
 })
 
 //render the generate report page 

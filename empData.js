@@ -25,6 +25,11 @@ exports.addEmployee= async (newEmployee) => {
     return results.insertId; 
 }
 
+exports.addSalesEmployee = async (newSalesEmployee) => {
+    let results = await db.query('INSERT INTO Sales SET ?', newSalesEmployee)
+    return results.insertId;
+}
+
 exports.checkIfNationalInsuranceNumberIsInDatabase = async (nin) =>{
     let results = await db.query('SELECT * FROM Employee WHERE nin=?', nin.replace(/ /g,''))
     let result = false
@@ -43,4 +48,10 @@ exports.getSalesEmployees = async () => {
     return await db.query( 
         "SELECT Employee.employee_id, first_name, last_name, total_sales_monthly" 
         + " FROM Employee, Sales WHERE Employee.employee_id = Sales.employee_id;") 
+}
+
+exports.getEmployeeByNiN = async (nin) => {
+    return await db.query(
+        "SELECT Employee.employee_id FROM Employee WHERE Employee.nin = ?", nin.replace(/ /g,'')
+    )
 }
