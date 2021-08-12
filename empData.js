@@ -38,3 +38,9 @@ exports.getEmployees = async () => {
         "SELECT employee_id, first_name, last_name, department" 
         + " FROM Employee;") 
 }
+
+exports.getSalesEmployees = async () => { 
+    return await db.query( 
+        "SELECT Employee.employee_id, first_name, last_name, total_sales_monthly" 
+        + " FROM Employee, Sales WHERE Employee.employee_id = Sales.employee_id;") 
+}

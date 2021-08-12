@@ -1,0 +1,50 @@
+{% extends "./layout.html" %}
+
+{% block pageTitle %}
+<title> Generate Sales Report </title>
+{% endblock %}
+
+{% block content %}
+    <h1>Please see monthly sales data below.</h1>
+    {% if error %}
+        <div class="govuk-error-message">{{ error }}</div>
+    {% endif %}
+    
+  
+
+    {% if salesEmployees and salesEmployees.length > 0 %} 
+      {% set bestEmployee = salesEmployees | sort(true, attribute='total_sales_monthly')  | first %} 
+      <p>{{bestEmployee.first_name}} {{bestEmployee.last_name}} had the highest sales total, with {{bestEmployee.total_sales_monthly}} this month. </p> 
+      
+      <h2>List of Sales Employees sorted by highest sales total</h2> 
+      <table>
+        <thead>
+            <tr>
+                
+                <th>ID</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Total monthly sales</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for  employee in salesEmployees | sort(true, attribute='total_sales_monthly')  %} {# true argument reverses sort order #}
+                <tr>
+                    
+                    <td>{{employee.employee_id}}</td>
+                    <td>{{employee.first_name}}</td>
+                    <td>{{employee.last_name}}</td>
+                    <td>{{employee.total_sales_monthly}}</td>
+                   
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    {% else %}
+      There are no sales employees. 
+    {% endif %}
+{% endblock %}
+
