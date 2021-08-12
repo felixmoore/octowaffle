@@ -1,0 +1,64 @@
+{% extends "./layout.html" %}
+
+{% block pageTitle %}
+<title> Add Employee</title>
+{% endblock %}
+
+<!-- Main page content -->
+{% block content %}
+    <h1>Welcome to the employee creator! Please fill the basic fields below</h1>
+    {% if error %}
+        <div class="govuk-error-message">{{ error }}</div>
+    {% endif %}
+    <form method="POST" action="/addEmployee" class="addEmployeeForm">
+        <fieldset>
+            <legend> Please enter details below </legend>
+            </br></br>
+            <label for="first_name">Please enter first name</label>
+            <input type="text" name="first_name">
+            </br></br>
+            <label for="last_name">Please enter last name</label>
+            <input type="text" name="last_name">
+            </br></br>    
+            <label for="nin">Please enter NiN</label>
+            <input type="text" name="nin">
+            </br></br>
+            <label for="department">Choose department</label>
+            <select name="department" id="department">
+                <option value="HR">HR</option>
+                <option value="Finance">Finance</option>
+                <option value="Sales Team">Sales Team</option>
+                <option value="Technical">Technical</option>
+                <option value="Talent Manager">Talent Manager</option>
+            </select>
+            <br></br>
+            <label for="email">Please enter email</label>
+            <input type="text" name="email">
+            </br></br>    
+            <label for="address">Please enter address</label>
+            <input type="text" name="address">
+            </br></br>    
+            <label for="phone_number">Please enter phone number</label>
+            <input type="text" name="phone_number">
+            </br></br>    
+            <label for="sortcode">Please enter sort code</label>
+            <input type="text" name="sortcode">
+            </br></br>    
+            <label for="account_number">Please enter account number</label>
+            <input type="text" name="account_number">
+            </br></br>    
+            <label for="salary">Please enter salary</label>
+            <input type="text" name="salary">
+            </br></br>      
+            <label for="isManager">Is Employee manager?</label>
+            <select name="isManager" id="isManager">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+            <br></br>
+            {% block addSales %}{% endblock %}  
+            <br></br>
+            <input type="submit">
+        </fieldset>
+    </form>
+{% endblock %}
