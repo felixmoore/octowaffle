@@ -9,7 +9,7 @@
 <body>
     <h1>Welcome to the employee creator! Please fill the basic fields below</h1>
 
-    <form method="POST" action="/addEmployee">
+    <form method="POST" action="/addEmployee" class="addEmployeeForm">
         <fieldset>
             <legend> Please enter details below </legend>
             </br></br>
@@ -22,16 +22,48 @@
             <label for="nin">Please enter NiN</label>
             <input type="text" name="nin">
             </br></br>
-            <!--
-            <label for="dob">Please enter DOB</label>
-            <input type="text" name="dob">
-            </br></br>    
+            <fieldset class="addEmployee" id="deptSelect">          
+                <legend> Please select employee department </legend>
+                <label for="HR">HR</label>
+                <input type="radio" name="HR">
+
+                <label for="Finance">Finance</label>
+                <input type="radio" name="Finance">
+
+                <label for="salesTeam">Sales Team</label>
+                <input type="radio" name="salesTeam">
+
+                <label for="talentManager">Talent Manager</label>
+                <input type="radio" name="talentManager">
+
+                <label for="technical">Technicalr</label>
+                <input type="radio" name="technical">
+            </fieldset>
+            <br></br>
             <label for="email">Please enter email</label>
             <input type="text" name="email">
             </br></br>    
-            <label for="bio">Please enter bio</label>
-            <input type="text" name="bio">
-            -->
+            <label for="address">Please enter address</label>
+            <input type="text" name="address">
+            </br></br>    
+            <label for="phone_number">Please enter phone number</label>
+            <input type="text" name="phone_number">
+            </br></br>    
+            <label for="sortcode">Please enter sort code</label>
+            <input type="text" name="sortcode">
+            </br></br>    
+            <label for="account_number">Please enter account number</label>
+            <input type="text" name="account_number">
+            </br></br>    
+            <label for="salary">Please enter salary</label>
+            <input type="text" name="salary">
+            </br></br>      
+            <label for="isManager">Is Employee manager?</label>
+            <select name="isManager" id="isManager">
+                <option value="yes">No</option>
+                <option value="no">Yes</option>
+            </select>
+            <br></br>
             <input type="submit">
         </fieldset>
     </form>
