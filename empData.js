@@ -24,3 +24,11 @@ exports.addEmployee= async (newEmployee) => {
     let results = await db.query('INSERT INTO Employee SET ?', newEmployee) 
     return results.insertId; 
 }
+
+exports.checkIfNationalInsuranceNumberIsInDatabase = async (nin) =>{
+    let results = await db.query('SELECT * FROM Employee WHERE nin=?', nin)
+    if(results.length > 0){
+        return true;
+    }
+    return false;
+}

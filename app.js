@@ -70,6 +70,9 @@ app.post('/addEmployee', async (req, res) => {
     if ((req.body.nin).length > 13) {
         return res.render('newEmployeeForm', { error: 'Invalid National Insurance Number' })
     }
+    if (empData.checkIfNationalInsuranceNumberIsInDatabase(req.body.nin)) {
+        return res.render('newEmployeeForm', { error: 'Someone has already registered with this National Insurance Number' })
+    }
     if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test((req.body.email).toLowerCase()))) {
         return res.render('newEmployeeForm', { error: 'Invalid email' })
     }
@@ -99,7 +102,6 @@ app.post('/addEmployee', async (req, res) => {
     res.render('newEmployeeForm', req.body)
 })
 
-
 //render the generate report page 
 app.get('/generateReport', function (req, res) {
     res.render('generateReport');
@@ -107,7 +109,6 @@ app.get('/generateReport', function (req, res) {
 
 //Apply middleware function to express
 app.use(middle);
-
 
 app.listen(7999, function () {
     console.log('Started')
