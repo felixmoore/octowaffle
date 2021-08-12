@@ -29,7 +29,37 @@ app.post('/addEmployee', async (req, res) => {
     //collect the information entered as a JSON object into the city var to pass to citydata.js
     var emp = req.body 
     console.log(req.body)
+    var department = ['HR', 'Sales', 'Finance', 'Technical']
     let insertedKey = await empData.addEmployee(req.body);
+    if((req.body.first_name).length > 30){
+        return res.render('newEmployeeForm', {error: 'Maximum characters for first name is 30!'})
+    }
+    if((req.body.last_name).length > 40){
+        return res.render('newEmployeeForm', {error: 'Maximum characters for last name is 40!'})
+    }
+    if(!(/^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\\s*\\d\\s*){6}([A-D]|\\s)$/.test((req.body.nin).toUpperCase()))){
+        return res.render('newEmployeeForm', {error: 'Invalid National Insurance Number'})
+    }  
+    if(!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test((req.body.email).toLowerCase()))){
+        return res.render('newEmployeeForm', {error: 'Invalid email'})
+    }
+    if(!department.includes(req.body.department)){
+        return res.render('newEmployeeForm', {error: 'This department is not allowed'})
+    }
+    if((req.body.address).length > 300){
+        return res.render('newEmployeeForm', {error: 'Maximum characters for address is 300!'})
+    }
+    if((req.body.phone_number).length > 15){
+        res.render('newEmployeeForm', {error: 'Maximum characters for phone number is 15!'})
+    }
+
+
+
+
+
+
+
+
     // validate here
     res.render('newEmployeeForm', req.body) 
 })
