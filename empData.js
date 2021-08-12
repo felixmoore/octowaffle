@@ -27,12 +27,12 @@ exports.addEmployee= async (newEmployee) => {
 
 exports.getEmployees = async () => { 
     return await db.query( 
-        "SELECT employee_id, first_name, last_name, department" 
+        "SELECT employee_id, first_name, last_name, department, salary" 
         + " FROM Employee;") 
 }
 
 exports.getSalesEmployees = async () => { 
     return await db.query( 
-        "SELECT Employee.employee_id, first_name, last_name, total_sales_monthly" 
+        "SELECT Employee.employee_id, first_name, last_name, total_sales_monthly, commission" 
         + " FROM Employee, Sales WHERE Employee.employee_id = Sales.employee_id;") 
 }

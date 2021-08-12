@@ -113,6 +113,10 @@ app.get('/generateSalesReport', async (req, res) => {
     res.render('generateSalesReport', { salesEmployees: await empData.getSalesEmployees() } ) 
 });
 
+app.get('/generatePayReport', async (req, res) => { 
+    res.render('generatePayReport', { employees: await empData.getEmployees() , salesEmployees: await empData.getSalesEmployees()} ) 
+});
+
 //Apply middleware function to express
 app.use(middle);
 
