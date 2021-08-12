@@ -26,11 +26,12 @@ exports.addEmployee= async (newEmployee) => {
 }
 
 exports.checkIfNationalInsuranceNumberIsInDatabase = async (nin) =>{
-    let results = await db.query('SELECT * FROM Employee WHERE nin=?', nin)
+    let results = await db.query('SELECT * FROM Employee WHERE nin=?', nin.replace(/ /g,''))
+    let result = false
     if(results.length > 0){
-        return true;
+        result = true
     }
-    return false;
+    return result
 }
 exports.getEmployees = async () => { 
     return await db.query( 

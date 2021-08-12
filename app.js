@@ -66,13 +66,16 @@ app.post('/addEmployee', async (req, res) => {
     if ((req.body.last_name).length > 40) {
         return res.render('newEmployeeForm', { error: 'Maximum characters for last name is 40!' })
     }
-    // if(!(/^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\\s*\\d\\s*){6}([A-D]|\\s)$/.test((req.body.nin).toUpperCase()))){
-    if ((req.body.nin).length > 13) {
-        return res.render('newEmployeeForm', { error: 'Invalid National Insurance Number' })
+    if(!(/^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\s*\d\s*){6}([A-D]|\s)$/.test(req.body.nin))){
+        return res.render('newEmployeeForm', {error: 'Invalid NiN'})
     }
-    // if (empData.checkIfNationalInsuranceNumberIsInDatabase(req.body.nin)) {
-    //     return res.render('newEmployeeForm', { error: 'Someone has already registered with this National Insurance Number' })
-    // }
+    if ((req.body.nin).length > 13) {
+        return res.render('newEmployeeForm', {error: 'Invalid National Insurance Number'})
+    }
+    if(await empData.checkIfNationalInsuranceNumberIsInDatabase(req.body.nin)){
+        return res.render('newEmployeeForm', {error: 'Someone has already registered with this insurance number'})
+    }
+
     if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test((req.body.email).toLowerCase()))) {
         return res.render('newEmployeeForm', { error: 'Invalid email' })
     }
