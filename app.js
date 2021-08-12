@@ -51,93 +51,66 @@ app.get('/addEmployee', function (req, res) {
 });
 
 app.post('/addEmployee', async (req, res) => {
-    //collect the information entered as a JSON object into the city var to pass to citydata.js
-    // for (key in req.body) {
-    //     if ((req.body[key]).length < 1) {
-    //         return res.render('newEmployeeForm', { error: 'Fields cannot be empty!' })
-    //     }
-    // }
-
-    // var department = ['HR', 'Sales Team', 'Finance', 'Technical', 'Talent Manager']
-
-    // if ((req.body.first_name).length > 30) {
-    //     return res.render(page, { error: 'Maximum characters for first name is 30!' })
-    // }
-    // if ((req.body.last_name).length > 40) {
-    //     return res.render(page, { error: 'Maximum characters for last name is 40!' })
-    // }
-
-    // // https://stackoverflow.com/questions/10204378/regular-expression-to-validate-uk-national-insurance-number
-    // if (!(/^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\s*\d\s*){6}([A-D]|\s)$/i.test((req.body.nin)))) {
-    //     return res.render(page, { error: 'Invalid NiN' })
-    // }
-    // if ((req.body.nin).length > 13) {
-    //     return res.render(page, { error: 'Invalid National Insurance Number' })
-    // }
-    // if (await empData.checkIfNationalInsuranceNumberIsInDatabase(req.body.nin)) {
-    //     return res.render(page, { error: 'Someone has already registered with this insurance number' })
-    // }
-    // // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
-    // if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test((req.body.email).toLowerCase()))) {
-    //     return res.render(page, { error: 'Invalid email' })
-    // }
-    // if (!department.includes(req.body.department)) {
-    //     return res.render(page, { error: 'This department is not allowed' })
-    // }
-    // if ((req.body.address).length > 300) {
-    //     return res.render(page, { error: 'Maximum characters for address is 300!' })
-    // }
-    // if ((req.body.phone_number).length > 15) {
-    //     return res.render(page, { error: 'Maximum characters for phone number is 15!' })
-    // }
-    // if ((req.body.sortcode).length > 8) {
-    //     return res.render(page, { error: 'Maximum characters for sort code is 8!' })
-    // }
-    // if ((req.body.account_number).length > 8) {
-    //     return res.render(page, { error: 'Maximum characters for account number is 26!' })
-    // }
-    // if ((req.body.salary).length > 9) {
-    //     return res.render(page, { error: 'You are too rich!' })
-    // }
-    let errors = await validateForm(req, res, 'newEmployeeForm')
+    let errors = await validateForm(req, res)
 
 
-    if(errors.length === 0){
+    if (errors.length === 0) {
         req.body.nin = (req.body.nin).replace(/ /g, '')
         let insertedKey = await empData.addEmployee(req.body);
         console.log(req.body.department)
         return res.render('newEmployeeForm', req.body)
     }
-    // if (req.body.department == 'Sales Team') {
-    //     return res.render('newSalesForm', { employee_id: empData.getEmployeeIDByNiN(req.body.nin) })
-    // }
-    return res.render('newEmployeeForm', {errors: errors})
-})
-
-app.get('/newSalesForm', (req, res) => {
-    return res.render('newSalesForm')
-})
-
-app.post('newSalesForm', async (req, res) => {
-    // console.log(req.body.employee_id)
-
     
+    return res.render('newEmployeeForm', { errors: errors })
+})
 
-
-    req.body.nin = (req.body.nin).replace(/ /g, '')
-    let insertedKey = await empData.addEmployee(req.body);
-
-    let empId = await empData.getEmployeeIDByNiN(req.body.nin)
-
-    let salesEmployee = {
-        total_sales_monthly: req.body.total_sales_monthly,
-        employee_id: empId,
-        commission: req.body.commission
-    }
-    //validate 
-    await empData.addSalesEmployee(salesEmployee)
-
+app.get('/addSalesEmployee', (req, res) => {
     return res.render('newSalesForm')
+})
+
+app.post('/addSalesEmployee', async (req, res) => {
+    // console.log(req.body.employee_id)
+    let errors = await validateForm(req, res)
+    if(!req.body.commision instanceof Number || req.body.commision < 1){
+        errors.push('Commission needs to be a positive number')
+    }
+    if(!req.body.total_sales_monthly instanceof Number || req.body.total_sales_monthly < 1){
+        errors.push('Sales needs to be a positive number')
+    }
+
+    console.log(req.body.total_sales_monthly)
+    console.log(req.body)
+
+    if (errors.length === 0 ){
+        req.body.nin = (req.body.nin).replace(/ /g, '')
+        let employee = {
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            nin: req.body.nin,
+            department: "Sales Team",
+            email: req.body.email,
+            address: req.body.address,
+            phone_number: req.body.phone_number,
+            sortcode: req.body.sortcode,
+            account_number: req.body.account_number,
+            salary: req.body.salary,
+            isManager: req.body.isManager
+        }
+        let insertedKey = await empData.addEmployee(employee);
+        
+        let empId = await empData.getEmployeeIDByNiN(req.body.nin)
+        
+        let salesEmployee = {
+            total_sales_monthly: req.body.total_sales_monthly,
+            employee_id: empId[0].employee_id,
+            commission: req.body.commission
+        }
+        //validate 
+        await empData.addSalesEmployee(salesEmployee)
+    }
+
+
+    return res.render('newSalesForm', {errors: errors})
 })
 
 //render the generate report page 
@@ -160,7 +133,7 @@ app.listen(7999, function () {
     console.log('Started')
 });
 
-async function validateForm(req, res, page) {
+async function validateForm(req, res) {
     let errors = []
     for (key in req.body) {
         if ((req.body[key]).length < 1) {
@@ -183,14 +156,14 @@ async function validateForm(req, res, page) {
         errors.push('Invalid NiN')
     }
     if ((req.body.nin).length > 13) {
-        errors.push('Invalid National Insurance Number' )
+        errors.push('Invalid National Insurance Number')
     }
     if (await empData.checkIfNationalInsuranceNumberIsInDatabase(req.body.nin)) {
         errors.push('Someone has already registered with this insurance number')
     }
     // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
     if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test((req.body.email).toLowerCase()))) {
-        errors.push('Invalid email' )
+        errors.push('Invalid email')
     }
     if (!department.includes(req.body.department)) {
         errors.push('This department is not allowed')
@@ -199,7 +172,7 @@ async function validateForm(req, res, page) {
         errors.push('Maximum characters for address is 300!')
     }
     if ((req.body.phone_number).length > 15) {
-        errors.push('Maximum characters for phone number is 15!' )
+        errors.push('Maximum characters for phone number is 15!')
     }
     if ((req.body.sortcode).length > 8) {
         errors.push('Maximum characters for sort code is 8!')
@@ -208,7 +181,7 @@ async function validateForm(req, res, page) {
         errors.push('Maximum characters for account number is 26!')
     }
     if ((req.body.salary).length > 9) {
-        errors.push('You are too rich!' )
+        errors.push('You are too rich!')
     }
     return errors;
 }

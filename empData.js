@@ -26,6 +26,7 @@ exports.addEmployee= async (newEmployee) => {
 }
 
 exports.addSalesEmployee = async (newSalesEmployee) => {
+    console.log(newSalesEmployee)
     let results = await db.query('INSERT INTO Sales SET ?', newSalesEmployee)
     return results.insertId;
 }

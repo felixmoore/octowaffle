@@ -7,10 +7,12 @@
 <!-- Main page content -->
 {% block content %}
     <h1>Welcome to the employee creator! Please fill the basic fields below</h1>
-    {% if error %}
+    {% for error in errors %}
         <div class="govuk-error-message">{{ error }}</div>
-    {% endif %}
-    <form method="POST" action="/addEmployee" class="addEmployeeForm">
+    {% endfor %}
+    {% block formTitle %}
+    <form method="POST" action="/addEmployee">
+    {% endblock %}
         <fieldset>
             <legend> Please enter details below </legend>
             </br></br>
