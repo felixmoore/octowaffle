@@ -10,10 +10,13 @@
         <div class="govuk-error-message">{{ error }}</div>
     {% endif %}
     
-  <h2>List of Sales Employees sorted by highest sales total</h2> 
+  
 
     {% if salesEmployees and salesEmployees.length > 0 %} 
-
+      {% set bestEmployee = salesEmployees | sort(true, attribute='total_sales_monthly')  | first %} 
+      <p>{{bestEmployee.first_name}} {{bestEmployee.last_name}} had the highest sales total, with {{bestEmployee.total_sales_monthly}} this month. </p> 
+      
+      <h2>List of Sales Employees sorted by highest sales total</h2> 
       <table>
         <thead>
             <tr>
