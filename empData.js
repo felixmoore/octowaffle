@@ -32,3 +32,8 @@ exports.checkIfNationalInsuranceNumberIsInDatabase = async (nin) =>{
     }
     return false;
 }
+exports.getEmployees = async () => { 
+    return await db.query( 
+        "SELECT employee_id, first_name, last_name, department" 
+        + " FROM Employee;") 
+}

@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "./layout.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% block pageTitle %}
+<title> Add Employee</title>
+{% endblock %}
 
-<body>
+<!-- Main page content -->
+{% block content %}
     <h1>Welcome to the employee creator! Please fill the basic fields below</h1>
     {% if error %}
     <div class="govuk-error-message">{{ error }}</div>
@@ -62,25 +59,4 @@
             <input type="submit">
         </fieldset>
     </form>
-    <!-- <button onclick="addFields()">Sales Employee</button>
-    
-    <script type='text/javascript'>
-        function addFields() {
-            let form = document.getElementById('addEmployee')
-            if (!document.getElementById('commission')) {
-                let sales = document.createElement('input')
-                sales.type = 'number'
-                sales.id = 'total_sales_monthly'
-                sales.name = 'total_sales_monthly'
-                form.appendChild(sales)
-                let commission = document.createElement('input')
-                commission.type = 'text'
-                commission.id = 'commission'
-                commission.name = 'commission'
-                form.appendChild(commission)
-            }
-        }
-    </script> -->
-</body>
-
-</html>
+{% endblock %}
