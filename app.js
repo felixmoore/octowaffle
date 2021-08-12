@@ -19,6 +19,31 @@ var middle = function (req, res, next) {
     next();
 }; 
 
+ //render the homepage when site accessed
+ app.get('/', function(req, res){ 
+    res.render('index'); 
+});
+
+//render the HR team homepage when link clicked on index
+app.get('/hr', function(req, res){ 
+    res.render('hrHomepage'); 
+});
+
+//render the Finance team homepage when link clicked on index
+app.get('/finance', function(req, res){ 
+    res.render('financeHomepage'); 
+});
+
+//render the Sales team homepage when link clicked on index
+app.get('/sales', function(req, res){ 
+    res.render('salesHomepage'); 
+});
+
+//render the Talent team homepage when link clicked on index
+app.get('/talent', function(req, res){ 
+    res.render('talentHomepage'); 
+});
+
  //render the newcityform page if the addcity url is accessed
 app.get('/addEmployee', function(req, res){ 
     console.log('here');
