@@ -24,3 +24,9 @@ exports.addEmployee= async (newEmployee) => {
     let results = await db.query('INSERT INTO Employee SET ?', newEmployee) 
     return results.insertId; 
 }
+
+exports.getEmployees = async () => { 
+    return await db.query( 
+        "SELECT employee_id, first_name, last_name, department" 
+        + " FROM Employee;") 
+}

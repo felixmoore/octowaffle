@@ -101,8 +101,12 @@ app.post('/addEmployee', async (req, res) => {
 
 
 //render the generate report page 
-app.get('/generateReport', function (req, res) {
-    res.render('generateReport');
+// app.get('/generateReport', function (req, res) {
+//     res.render('generateReport');
+// });
+
+app.get('/generateReport', async (req, res) => { 
+    res.render('generateReport', { employees: await empData.getEmployees() } ) 
 });
 
 //Apply middleware function to express
