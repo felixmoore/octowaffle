@@ -1,0 +1,26 @@
+{% extends "./layout.html" %}
+
+{% block pageTitle %}
+<title> Add Sales Employee</title>
+{% endblock %}
+
+<!-- Main page content -->
+{% block content %}
+    <h1>Please fill the extra fields below</h1>
+    {% if error %}
+        <div class="govuk-error-message">{{ error }}</div>
+    {% endif %}
+    <form method="POST" action="/newSalesForm" class="addSalesEmployeeForm">
+        <fieldset>
+            <legend> Please enter extra details below </legend>
+            </br></br>
+            <label for="total_sales_monthly">Please enter total sales:</label>
+            <input type="text" name="total_sales_monthly">
+            </br></br>
+            <label for="commission">Please enter commission rate</label>
+            <input type="text" name="commission">
+            <br></br>
+            <input type="submit">
+        </fieldset>
+    </form>
+{% endblock %}
