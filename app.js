@@ -99,6 +99,12 @@ app.post('/addEmployee', async (req, res) => {
     res.render('newEmployeeForm', req.body)
 })
 
+
+//render the generate report page 
+app.get('/generateReport', function (req, res) {
+    res.render('generateReport');
+});
+
 //Apply middleware function to express
 app.use(middle);
 
