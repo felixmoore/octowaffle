@@ -10,16 +10,19 @@
     {% if error %}
         <div class="govuk-error-message">{{ error }}</div>
     {% endif %}
-    <form method="POST" action="/newSalesForm" class="addSalesEmployeeForm">
+    {% block formTitle %}
+    <form method="POST" action="/addSalesEmployee" class="addSalesEmployeeForm">
+    {% endblock %}
         <fieldset>
             <legend> Please enter extra details below </legend>
             </br></br>
             <label for="total_sales_monthly">Please enter total sales:</label>
-            <input type="text" name="total_sales_monthly">
+            <input type="number" name="total_sales_monthly">
             </br></br>
             <label for="commission">Please enter commission rate</label>
-            <input type="text" name="commission">
+            <input type="number" name="commission">
             <br></br>
+
         </fieldset>
     </form>
 {% endblock %}
