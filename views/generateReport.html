@@ -12,6 +12,38 @@
         <div class="govuk-error-message">{{ error }}</div>
     {% endif %}
     
-    </form>
+    {% block content %}
+  <h2>List of Employees</h2> 
+
+    {% if employees and employees.length > 0 %} 
+
+      <table>
+        <thead>
+            <tr>
+                <th>Department</th>
+                <th>ID</th>
+                <th>First name</th>
+                <th>Last name</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for  employee in employees | sort(attribute='department')  %}
+                <tr>
+                    <td>{{employee.department}}</td>
+                    <td>{{employee.employee_id}}</td>
+                    <td>{{employee.first_name}}</td>
+                    <td>{{employee.last_name}}</td>
+                   
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    {% else %}
+      There are no employees. 
+  {% endif %}
+{% endblock %}
 </body>
 </html>
