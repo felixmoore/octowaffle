@@ -50,7 +50,7 @@ exports.getSalesEmployees = async () => {
         + " FROM Employee, Sales WHERE Employee.employee_id = Sales.employee_id;") 
 }
 
-exports.getEmployeeByNiN = async (nin) => {
+exports.getEmployeeIDByNiN = async (nin) => {
     return await db.query(
         "SELECT Employee.employee_id FROM Employee WHERE Employee.nin = ?", nin.replace(/ /g,'')
     )
