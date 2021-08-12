@@ -70,9 +70,9 @@ app.post('/addEmployee', async (req, res) => {
     if ((req.body.nin).length > 13) {
         return res.render('newEmployeeForm', { error: 'Invalid National Insurance Number' })
     }
-    if (empData.checkIfNationalInsuranceNumberIsInDatabase(req.body.nin)) {
-        return res.render('newEmployeeForm', { error: 'Someone has already registered with this National Insurance Number' })
-    }
+    // if (empData.checkIfNationalInsuranceNumberIsInDatabase(req.body.nin)) {
+    //     return res.render('newEmployeeForm', { error: 'Someone has already registered with this National Insurance Number' })
+    // }
     if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test((req.body.email).toLowerCase()))) {
         return res.render('newEmployeeForm', { error: 'Invalid email' })
     }
@@ -95,6 +95,7 @@ app.post('/addEmployee', async (req, res) => {
         return res.render('newEmployeeForm', { error: 'You are too rich!' })
     }
 
+    req.body.nin = (req.body.nin).replace(/ /g,'')
     let insertedKey = await empData.addEmployee(req.body);
 
 
