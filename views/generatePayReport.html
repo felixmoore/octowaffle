@@ -1,0 +1,59 @@
+{% extends "./layout.html" %}
+
+{% block pageTitle %}
+<title> Generate Pay Report </title>
+{% endblock %}
+
+{% block content %}
+    <h1>Please see employee pay data below.</h1>
+    {% if error %}
+        <div class="govuk-error-message">{{ error }}</div>
+    {% endif %}
+    
+  <h2>List of Employees</h2> 
+
+    {% if employees and employees.length > 0 %} 
+   
+      <table>
+        <thead>
+            <tr>
+                <th>Department</th>
+                <th>ID</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Gross pay</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees | sort(attribute='department') %}
+            {% set salesEmployee = null %}
+                <tr>
+                    <td>{{employee.department}}</td>
+                    <td>{{employee.employee_id}}</td>
+                    <td>{{employee.first_name}}</td>
+                    <td>{{employee.last_name}}</td>
+                     {% if salesEmployees and salesEmployees.length > 0 %} {# if sales employees exist #}
+                        {% for salesEmployee in salesEmployees %}
+                            {% if (salesEmployee.employee_id|int) == (employee.employee_id|int) %} {# check if IDs match #}
+                                {% set salary = ((employee.salary / 12) * 0.75) 
+                                + (salesEmployee.total_sales_monthly * salesEmployee.commission) %} {# specific sales employee salary calculation #}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %} 
+                    {% if salary == undefined %} {# set regular salary calculation if not sales employee #}
+                        {% set salary = (employee.salary / 12) * 0.75 %}
+                    {% endif %}
+
+                    <td>{{salary}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    {% else %}
+      There are no employees. 
+    {% endif %}
+{% endblock %}
+
